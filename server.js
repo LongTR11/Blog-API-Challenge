@@ -13,8 +13,38 @@ app.use(morgan('common'));
 
 app.use('/', router);
 
-app.listen(8080, function () {
-    console.log('listening on 8080');
-});
+let server;
+
+function runServer() {
+    return new Promise(function(resolve, reject) {
+        server = app.listen(8080, function () {
+            console.log('listening on 8080');
+            resolve();
+        }).on('error', function(error) {
+            reject(error);
+        })
+    })
+}
+
+function closeServer() {
+    return new Promise(function(resolve, reject) {
+        console.log('closing the server');
+        server.close(function(error) {
+            if (error) {
+                return reject(error);
+            }
+            resolve();
+        })
+    })
+}
+
+if (require.main === module) {
+    runServer().catch(function(err) {
+        return console.error(err);
+    })
+}
+
+
  
 app.use('/blogposts', router);
+module.exports = {app, runServer, closeServer};
