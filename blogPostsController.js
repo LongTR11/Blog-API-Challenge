@@ -17,18 +17,18 @@ function post(req,res) {
 //put
 function update(req, res) {
     res.json(BlogPosts.update({
-        id: req.body.id,
+        id: req.params.id,
         title: req.body.title,
         content: req.body.content,
         author: req.body.author,
         publishDate: req.body.publishDate
-    }))
+    }));
 }
 // delete
 function destroy(req, res) {
     const blogPost = req.params.id;
     BlogPosts.delete(blogPost);
-    res.json({message: 'Blog post terminated.'})
+    res.json({message: 'Blog post terminated.'});
 }
 
 const BlogPostsController = {
